@@ -1,17 +1,27 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
-import Calendar from './Calendar.jsx';
-import TimePicker from './TimePicker.jsx';
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import Calendar from "./Calendar.jsx";
+import TimePicker from "./TimePicker.jsx";
 
-const capitalize = (text) => text ? text.charAt(0).toLocaleUpperCase('uk-UA') + text.slice(1) : '';
+const capitalize = (text) =>
+  text ? text.charAt(0).toLocaleUpperCase("uk-UA") + text.slice(1) : "";
 
 export const formatSelection = (date, time, options = {}) => {
-  if (!date || !time) return '';
-  const formatted = new Intl.DateTimeFormat('uk-UA', { weekday: 'long', day: 'numeric', month: 'long', ...options }).format(date);
+  if (!date || !time) return "";
+  const formatted = new Intl.DateTimeFormat("uk-UA", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    ...options,
+  }).format(date);
   return `${capitalize(formatted)}, о ${time}`;
 };
 
-export default function DateTimePage({ selection, onSelectionChange, onConfirm }) {
+export default function DateTimePage({
+  selection,
+  onSelectionChange,
+  onConfirm,
+}) {
   const [dateFlash, setDateFlash] = useState(false);
   const [timeFlash, setTimeFlash] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
@@ -19,19 +29,19 @@ export default function DateTimePage({ selection, onSelectionChange, onConfirm }
 
   useEffect(() => () => flashTimers.current.forEach(window.clearTimeout), []);
   const flash = (kind) => {
-    const setter = kind === 'date' ? setDateFlash : setTimeFlash;
+    const setter = kind === "date" ? setDateFlash : setTimeFlash;
     setter(true);
     const timer = window.setTimeout(() => setter(false), 650);
     flashTimers.current.push(timer);
   };
   const chooseDate = (date) => {
     onSelectionChange({ ...selection, date });
-    flash('date');
+    flash("date");
   };
   const chooseTime = (time) => {
     if (!selection.date || !time) return;
     onSelectionChange({ ...selection, time });
-    flash('time');
+    flash("time");
   };
   const ready = Boolean(selection.date && selection.time);
   const summary = formatSelection(selection.date, selection.time);
@@ -44,8 +54,10 @@ export default function DateTimePage({ selection, onSelectionChange, onConfirm }
   return (
     <div className="date-card card-glass">
       <div className="section-heading">
-        <span className="little-heart">♥</span>
-        <h1>Урааа! <span>❤️</span> Я дуже радий!</h1>
+        <span className="little-heart">♡</span>
+        <h1>
+          Урааа! <span>❤️</span> Я дуже радий!
+        </h1>
         <p>Тоді давай оберемо день нашої зустрічі 🥰</p>
       </div>
 
@@ -65,18 +77,40 @@ export default function DateTimePage({ selection, onSelectionChange, onConfirm }
               exit={{ opacity: 0, y: 8 }}
               transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="field-label">А о котрій годинці зустрінемось? <span>⏰</span></p>
-              <TimePicker selectedTime={selection.time} onSelect={chooseTime} disabled={!selection.date} />
+              <p className="field-label">
+                А о котрій годинці зустрінемось? <span>⏲︎</span>
+              </p>
+              <TimePicker
+                selectedTime={selection.time}
+                onSelect={chooseTime}
+                disabled={!selection.date}
+              />
               {timeFlash && <SelectionBurst variant="time" />}
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      <motion.div className={`selection-summary ${ready ? 'is-ready' : ''}`} animate={ready ? { scale: [1, 1.018, 1] } : {}}>
-        {ready ? <>Значить, <strong>{summary}</strong> <span>♡</span></> : 'Я чекатиму на твій вибір ♡'}
+      <motion.div
+        className={`selection-summary ${ready ? "is-ready" : ""}`}
+        animate={ready ? { scale: [1, 1.018, 1] } : {}}
+      >
+        {ready ? (
+          <>
+            Значить, <strong>{summary}</strong> <span>♡</span>
+          </>
+        ) : (
+          "Я чекатиму на твій вибір ♡"
+        )}
       </motion.div>
-      <motion.button className="primary-button confirm-button" type="button" disabled={!ready || isConfirming} onClick={confirm} whileHover={ready && !isConfirming ? { scale: 1.035 } : {}} whileTap={ready && !isConfirming ? { scale: 0.97 } : {}}>
+      <motion.button
+        className="primary-button confirm-button"
+        type="button"
+        disabled={!ready || isConfirming}
+        onClick={confirm}
+        whileHover={ready && !isConfirming ? { scale: 1.035 } : {}}
+        whileTap={ready && !isConfirming ? { scale: 0.97 } : {}}
+      >
         ПІДТВЕРДИТИ <span>❤️</span>
       </motion.button>
     </div>
@@ -93,10 +127,15 @@ function SelectionBurst({ variant }) {
           <motion.span
             key={index}
             initial={{ opacity: 0, scale: 0.2, x: 0, y: 0 }}
-            animate={{ opacity: [0, 1, 0], scale: [0.2, 1, 0.5], x: Math.cos(angle) * distance, y: Math.sin(angle) * distance }}
+            animate={{
+              opacity: [0, 1, 0],
+              scale: [0.2, 1, 0.5],
+              x: Math.cos(angle) * distance,
+              y: Math.sin(angle) * distance,
+            }}
             transition={{ duration: 0.58, delay: index * 0.02 }}
           >
-            {index % 3 === 0 ? '♥' : '✦'}
+            {index % 3 === 0 ? "♥" : "✦"}
           </motion.span>
         );
       })}

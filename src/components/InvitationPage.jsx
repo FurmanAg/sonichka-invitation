@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
-import Pusheen from './Pusheen.jsx';
+import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import Pusheen from "./Pusheen.jsx";
 
 const burstHearts = Array.from({ length: 18 }, (_, index) => ({
   id: index,
@@ -27,8 +27,10 @@ export default function InvitationPage({ onAccepted }) {
     const maxY = Math.max(0, rect.height - buttonHeight - 4);
     let x = Math.round(Math.random() * maxX);
     let y = Math.round(Math.random() * maxY);
-    if (Math.abs(x - noPosition.x) < 36) x = (x + Math.round(maxX / 2)) % Math.max(maxX, 1);
-    if (Math.abs(y - noPosition.y) < 18) y = (y + Math.round(maxY / 2)) % Math.max(maxY, 1);
+    if (Math.abs(x - noPosition.x) < 36)
+      x = (x + Math.round(maxX / 2)) % Math.max(maxX, 1);
+    if (Math.abs(y - noPosition.y) < 18)
+      y = (y + Math.round(maxY / 2)) % Math.max(maxY, 1);
     setNoPosition({ x, y });
   };
 
@@ -45,28 +47,48 @@ export default function InvitationPage({ onAccepted }) {
       <div className="card-glow" aria-hidden="true" />
 
       <motion.div
-        className={`invitation-content ${isCelebrating ? 'is-celebrating' : ''}`}
-        animate={isCelebrating ? { scale: [1, 1.045, 1.02], rotate: [0, -0.8, 0.8, 0] } : {}}
-        transition={{ duration: 0.68, ease: 'easeInOut' }}
+        className={`invitation-content ${isCelebrating ? "is-celebrating" : ""}`}
+        animate={
+          isCelebrating
+            ? { scale: [1, 1.045, 1.02], rotate: [0, -0.8, 0.8, 0] }
+            : {}
+        }
+        transition={{ duration: 0.68, ease: "easeInOut" }}
       >
-        <motion.div className="hero-pusheen-wrap" animate={{ y: [0, -9, 0], rotate: [0, 1, 0, -1, 0] }} transition={{ duration: 4.1, repeat: Infinity, ease: 'easeInOut' }}>
+        <motion.div
+          className="hero-pusheen-wrap"
+          animate={{ y: [0, -9, 0], rotate: [0, 1, 0, -1, 0] }}
+          transition={{ duration: 4.1, repeat: Infinity, ease: "easeInOut" }}
+        >
           <Pusheen variant="heart" className="hero-pusheen" />
         </motion.div>
         <p className="eyebrow">маленьке запрошення для тебе</p>
-        <h1>Сонічко, підеш зі мною на зустріч? <span>🥺❤️</span></h1>
+        <h1>
+          Сонічка, чи підеш ти зі мною на побачення? <span>🥺❤️</span>
+        </h1>
 
         <div className="invitation-actions" ref={buttonArea}>
-          <motion.button className="primary-button yes-button" type="button" onClick={accept} whileHover={{ scale: 1.055 }} whileTap={{ scale: 0.96 }} disabled={isCelebrating}>
+          <motion.button
+            className="primary-button yes-button"
+            type="button"
+            onClick={accept}
+            whileHover={{ scale: 1.055 }}
+            whileTap={{ scale: 0.96 }}
+            disabled={isCelebrating}
+          >
             ТАК <span>❤️</span>
           </motion.button>
           <motion.button
             className="no-button"
             type="button"
             onMouseEnter={runAway}
-            onPointerDown={(event) => { event.preventDefault(); runAway(); }}
+            onPointerDown={(event) => {
+              event.preventDefault();
+              runAway();
+            }}
             onClick={runAway}
             animate={{ left: noPosition.x, top: noPosition.y }}
-            transition={{ type: 'spring', stiffness: 370, damping: 20 }}
+            transition={{ type: "spring", stiffness: 370, damping: 20 }}
             aria-label="Ні, але ця кнопка сором'язливо тікає"
           >
             НІ 🙈
@@ -83,11 +105,20 @@ export default function InvitationPage({ onAccepted }) {
               <motion.span
                 key={heart.id}
                 initial={{ opacity: 0, scale: 0.35, x: 0, y: 0 }}
-                animate={{ opacity: [0, 1, 0], scale: [0.35, 1.15, 0.75], x: Math.cos(radians) * heart.distance, y: Math.sin(radians) * heart.distance }}
-                transition={{ duration: 0.76, delay: heart.id * 0.014, ease: 'easeOut' }}
+                animate={{
+                  opacity: [0, 1, 0],
+                  scale: [0.35, 1.15, 0.75],
+                  x: Math.cos(radians) * heart.distance,
+                  y: Math.sin(radians) * heart.distance,
+                }}
+                transition={{
+                  duration: 0.76,
+                  delay: heart.id * 0.014,
+                  ease: "easeOut",
+                }}
                 style={{ fontSize: heart.size }}
               >
-                {heart.id % 4 === 0 ? '✦' : '♥'}
+                {heart.id % 4 === 0 ? "✦" : "♥"}
               </motion.span>
             );
           })}
