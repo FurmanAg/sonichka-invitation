@@ -63,9 +63,7 @@ export default function InvitationPage({ onAccepted }) {
           <Pusheen variant="heart" className="hero-pusheen" />
         </motion.div>
         <p className="eyebrow">маленьке запрошення для тебе</p>
-        <h1>
-          Сонічка, чи підеш ти зі мною на побачення? <span>🥺❤️</span>
-        </h1>
+        <h1>Сонічка, чи підеш ти зі мною на побачення?</h1>
 
         <div className="invitation-actions" ref={buttonArea}>
           <motion.button
